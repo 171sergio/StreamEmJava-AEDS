@@ -18,23 +18,25 @@ void setup() {
 }
 
 void draw() {
-  background(0, 25); // Efeito de trilha //<>//
-
-  // Adiciona novas particulas até atingir o maximo
+  background(0, 25); // Efeito de trilha
+  
+  // Adiciona novas partículas até atingir o máximo
   while (particulas.size() < maximoParticulas && iteradorParticula.hasNext()) {
     Particula novaParticula = iteradorParticula.next();
     particulas.add(novaParticula);
   }
 
-  // Atualiza e exibe todas as particulas usando Streams
+  // Atualiza e exibe todas as partículas usando Streams
   particulas.stream()
             .map(p -> { p.atualizar(); return p; })
             .forEach(Particula::exibir);
 
-  // Remove particulas que atendem a determinada condicao (exemplo: duracaoVida > 0) usando filter
-  List<Particula> partiuclasDeMerda = particulas.stream().filter(p -> p.duracaoVida < 0).collect(Collectors.toList());
-  particulas.removeAll(partiuclasDeMerda);  
+  // Filtra a lista de partículas para remover as que têm duracaoVida <= 0
+  particulas = particulas.stream()
+                         .filter(p -> p.duracaoVida > 0)
+                         .collect(Collectors.toList());
 }
+
 
 Particula gerarParticulaAleatoria() {
   PVector pos = new PVector(random(width), random(height));
